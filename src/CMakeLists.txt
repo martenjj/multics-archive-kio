@@ -1,49 +1,37 @@
+#########################################################################
+#  Project:		KDE - Multics Archive Reader			#
+#  Edit:		16-Mar-17					#
+#########################################################################
+#									#
+#  Copyright (c) 2017 Jonathan Marten <jjm@keelhaul.me.uk>		#
+#  Home and download page:  http:#github.com/martenjj/kiomultics	#
+#									#
+#  This program is free software; you can redistribute it and/or	#
+#  modify it under the terms of the GNU General Public License as	#
+#  published by the Free Software Foundation; either version 2 of	#
+#  the License, or (at your option) any later version.			#
+#									#
+#  It is distributed in the hope that it will be useful, but		#
+#  WITHOUT ANY WARRANTY; without even the implied warranty of		#
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	#
+#  GNU General Public License for more details.				#
+#									#
+#  You should have received a copy of the GNU General Public		#
+#  License along with this program; see the file COPYING for further	#
+#  details.  If not, see <http://www.gnu.org/licenses>.			#
+#									#
+#########################################################################
 
-set(kiomultics_SRCS
-    kiomultics.cpp
-)
+project(kio-multics)
 
-ecm_qt_declare_logging_category(kiomultics_SRCS
-    HEADER loggingcategory.h
-    IDENTIFIER KIOMulticsLog
-    CATEGORY_NAME kiomultics
-    DEFAULT_SEVERITY Debug
-)
+find_package(Qt5 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS Core Widgets)
+find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS I18n KIO Archive)
 
-add_library(KIOMultics ${kiomultics_SRCS})
-generate_export_header(KIOMultics BASE_NAME KIOMultics)
+add_definitions(-DTRANSLATION_DOMAIN=\"kio_multics\")
 
-# target_include_directories(KF5Archive
-    # INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/KArchive>"
-# )
+add_library(archive_mxarc MODULE kio_archive_mxarc.cpp kmulticsarchive.cpp)
+target_link_libraries(archive_mxarc Qt5::Core KF5::I18n KF5::KIOCore KF5::Archive KF5KioArchive)
+set_target_properties(archive_mxarc PROPERTIES OUTPUT_NAME "mxarc")
 
-target_link_libraries(KIOMultics
-    PUBLIC
-        Qt5::Core
-    PRIVATE
-        KF5::I18n
-        KF5::Archive
-)
-
-
-set_target_properties(KIOMultics PROPERTIES SOVERSION ${SOVERSION})
-
-ecm_generate_headers(KIOMultics_HEADERS
-    HEADER_NAMES
-    KIOMultics
-    REQUIRED_HEADERS KIOMultics_HEADERS
-)
-
-install(TARGETS KIOMultics
-        # EXPORT KF5ArchiveTargets
-        ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
-
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kiomultics_export.h ${KIOMultics_HEADERS}
-  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/KIOMultics
-  COMPONENT Devel)
-
-# include(ECMGeneratePriFile)
-# ecm_generate_pri_file(BASE_NAME KArchive LIB_NAME KF5Archive DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF5}/KArchive)
-# install(FILES ${PRI_FILENAME}
-        # DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
-
+install(TARGETS archive_mxarc DESTINATION ${PLUGIN_INSTALL_DIR}/kf5/kio)
+install(FILES mxarc.protocol DESTINATION ${SERVICES_INSTALL_DIR})
