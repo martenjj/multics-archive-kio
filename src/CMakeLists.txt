@@ -1,6 +1,6 @@
 #########################################################################
 #  Project:		KDE - Multics Archive Reader			#
-#  Edit:		16-Mar-17					#
+#  Edit:		28-Mar-17					#
 #########################################################################
 #									#
 #  Copyright (c) 2017 Jonathan Marten <jjm@keelhaul.me.uk>		#
@@ -27,10 +27,14 @@ project(kio-multics)
 find_package(Qt5 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS Core Widgets)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS I18n KIO Archive)
 
+find_package(KioArchive REQUIRED NO_POLICY_SCOPE)
+set_package_properties("KioArchive" PROPERTIES DESCRIPTION "Archive protocol base class library" TYPE REQUIRED PURPOSE "Required to build the archiver")
+
 add_definitions(-DTRANSLATION_DOMAIN=\"kio_multics\")
 
 add_library(archive_mxarc MODULE kio_archive_mxarc.cpp kmulticsarchive.cpp)
-target_link_libraries(archive_mxarc Qt5::Core KF5::I18n KF5::KIOCore KF5::Archive KF5KioArchive)
+generate_export_header(archive_mxarc BASE_NAME kmulticsarchive EXPORT_FILE_NAME kmulticsarchive_export.h)
+target_link_libraries(archive_mxarc Qt5::Core KF5::I18n KF5::KIOCore KF5::Archive KioArchive)
 set_target_properties(archive_mxarc PROPERTIES OUTPUT_NAME "mxarc")
 
 install(TARGETS archive_mxarc DESTINATION ${PLUGIN_INSTALL_DIR}/kf5/kio)

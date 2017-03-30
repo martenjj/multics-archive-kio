@@ -1,6 +1,6 @@
 #########################################################################
 #  Project:		KDE - Multics Archive Reader			#
-#  Edit:		16-Mar-17					#
+#  Edit:		28-Mar-17					#
 #########################################################################
 #									#
 #  Copyright (c) 2017 Jonathan Marten <jjm@keelhaul.me.uk>		#
@@ -45,6 +45,7 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(FeatureSummary)
+include(GenerateExportHeader)
 
 #########################################################################
 #									#
