@@ -1,10 +1,10 @@
 #########################################################################
 #  Project:		KDE - Multics Archive Reader			#
-#  Edit:		28-Mar-17					#
+#  Edit:		08-May-17					#
 #########################################################################
 #									#
 #  Copyright (c) 2017 Jonathan Marten <jjm@keelhaul.me.uk>		#
-#  Home and download page:  http:#github.com/martenjj/kiomultics	#
+#  Home and download page:  http://github.com/martenjj/kiomultics	#
 #									#
 #  This program is free software; you can redistribute it and/or	#
 #  modify it under the terms of the GNU General Public License as	#
