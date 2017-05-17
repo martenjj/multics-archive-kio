@@ -1,16 +1,13 @@
 /////////////////////////////////////////////////// -*- mode:c++; -*- ////
 //									//
-//  Project:	KDE - Multics Archive Reader				//
-//  Edit:	28-Mar-17						//
-//									//
-//////////////////////////////////////////////////////////////////////////
+//  Project:  KDE - Multics Archive Reader				//
 //									//
 //  Copyright (c) 2017 Jonathan Marten <jjm@keelhaul.me.uk>		//
-//  Home and download page:  http://github.com/martenjj/kiomultics	//
+//  Home & download:  http://github.com/martenjj/multics-archive-kio	//
 //									//
 //  This program is free software; you can redistribute it and/or	//
 //  modify it under the terms of the GNU General Public License as	//
-//  published by the Free Software Foundation; either version 2 of	//
+//  published by the Free Software Foundation; either version 3 of	//
 //  the License, or (at your option) any later version.			//
 //									//
 //  It is distributed in the hope that it will be useful, but		//
@@ -19,7 +16,7 @@
 //  GNU General Public License for more details.			//
 //									//
 //  You should have received a copy of the GNU General Public		//
-//  License along with this program; see the file COPYING for further	//
+//  License along with this program; see the file LICENSE for further	//
 //  details.  If not, see <http://www.gnu.org/licenses>.		//
 //									//
 //////////////////////////////////////////////////////////////////////////
@@ -170,9 +167,9 @@ bool KMulticsArchive::openArchive(QIODevice::OpenMode openMode)
     QIODevice *dev = device();
     if (dev==NULL) return (false);
 
-    const QByteArray hbgn = QByteArray::fromRawData(ARCHIVE_HBGN, 8);
-    const QByteArray hend = QByteArray::fromRawData(ARCHIVE_HEND, 8);
-    const QByteArray chdr = QByteArray::fromRawData(ARCHIVE_CHDR, 8);
+    const QByteArray hbgn = QByteArray::fromRawData(ARCHIVE_HBGN, sizeof(ARCHIVE_HBGN));
+    const QByteArray hend = QByteArray::fromRawData(ARCHIVE_HEND, sizeof(ARCHIVE_HBGN));
+    const QByteArray chdr = QByteArray::fromRawData(ARCHIVE_CHDR, sizeof(ARCHIVE_HBGN));
 
     struct passwd *pwd = getpwuid(getuid());
     Q_ASSERT(pwd!=NULL);
@@ -182,7 +179,7 @@ bool KMulticsArchive::openArchive(QIODevice::OpenMode openMode)
     Q_ASSERT(grp!=NULL);
     const QString usergroup = QString::fromLocal8Bit(grp->gr_name);
 
-    QByteArray magic = dev->read(8);
+    QByteArray magic = dev->read(sizeof(ARCHIVE_HBGN));
     if (magic!=hbgn)
     {
         setErrorString(i18n("Invalid magic file header '%1', expected '%2'", formatMagic(magic), formatMagic(hbgn)));
