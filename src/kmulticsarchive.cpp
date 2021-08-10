@@ -129,7 +129,7 @@ static QDateTime decodeDate(const QByteArray &mdate)
     // "11/04/82  1938.1"
 
     int year = mdate.mid(6, 2).toInt();
-    year += (year<30 ? 2000 : 1900);
+    year += (year<64 ? 2000 : 1900);
     QDate dt(year, mdate.mid(0, 2).toInt(), mdate.mid(3, 2).toInt());
     QTime tm(mdate.mid(10, 2).toInt(), mdate.mid(12, 2).toInt(), qRound(mdate.mid(14, 2).toDouble()*60));
     return (QDateTime(dt, tm, Qt::LocalTime));
